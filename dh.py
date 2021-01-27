@@ -43,7 +43,12 @@ print(j_partial)
 b_partial = Bob.generate_partial_key()
 print(b_partial)
 
+j_full = John.generate_full_key(b_partial)
+b_full = Bob.generate_full_key(j_partial)
 
+b_encrypted = Bob.encrypt_message(message)
+print(b_encrypted)
 
-
+message = John.decrypt_message(b_encrypted)
+print(message)
 
