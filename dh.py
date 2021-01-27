@@ -1,3 +1,15 @@
+"""
+Written by Konstantin Zubchenko
+
+In order to understand and realize Diffie-Hellman algorithm in DH protocol.
+
+27.01.2021
+"""
+
+import random
+
+# The basic class, which providing all the math
+
 class DH_Endpoint():
     def __init__(self, public_key1, public_key2, private_key):
         self.public_key1 = public_key1
@@ -29,26 +41,34 @@ class DH_Endpoint():
         return decrypted_message
 
 
-message = "This is a test message"
+# Sending message
+message = "Try to hack me"
+
+# Generating pub/priv keys for client and receiver on their side. Integers
+# are much smaller then needed in case of simplifying training
 j_public = 197
-j_private = 199
+j_private = random.randint(0, 1000)
 b_public = 151
-b_private = 157
+b_private = random.randint(0, 1000)
+
+# Making objects
 John = DH_Endpoint(j_public, b_public, j_private)
 Bob = DH_Endpoint(j_public, b_public, b_private)
 
+# Generating part keys, that will flow through traffic to both: client and receiver
 j_partial = John.generate_partial_key()
 print(j_partial)
 
 b_partial = Bob.generate_partial_key()
 print(b_partial)
 
+# Generating full keys to encrypt and decrypt messages depending on received part keys
 j_full = John.generate_full_key(b_partial)
 b_full = Bob.generate_full_key(j_partial)
 
+# Conversation itself
 b_encrypted = Bob.encrypt_message(message)
 print(b_encrypted)
 
 message = John.decrypt_message(b_encrypted)
 print(message)
-
